@@ -30,7 +30,7 @@ var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
   var sampleJson = {
-    'glossary': 'dog'
+    'results': ['blah']
   };
   
   // dispatcher.onGet('/classes/messages', function(req, res) {
