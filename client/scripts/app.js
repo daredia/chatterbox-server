@@ -30,7 +30,7 @@ var app = {
     app.fetch(false);
 
     // Poll for new messages
-    setInterval(app.fetch, 3000);
+    // setInterval(app.fetch, 3000);
   },
 
   send: function(data) {
@@ -46,6 +46,9 @@ var app = {
       contentType: 'application/json',
       success: function (data) {
         // Trigger a fetch to update the messages, pass true to animate
+        console.log('success post');
+        console.log(data);
+
         app.fetch();
       },
       error: function (data) {
@@ -59,10 +62,9 @@ var app = {
       url: app.server,
       type: 'GET',
       contentType: 'application/json',
-      // data: { order: '-createdAt'},
+      data: { order: '-createdAt'},
       success: function(data) {
         app.stopSpinner();
-
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
 
@@ -71,7 +73,7 @@ var app = {
         var displayedRoom = $('.chat span').first().data('roomname');
         
         // Only bother updating the DOM if we have a new message
-        if (mostRecentMessage.objectId !== app.lastMessageId || app.roomname !== displayedRoom) {
+        if (true || mostRecentMessage.objectId !== app.lastMessageId || app.roomname !== displayedRoom) {
           // Update the UI with the fetched rooms
           app.populateRooms(data.results);
 
@@ -217,7 +219,8 @@ var app = {
     var message = {
       username: app.username,
       text: app.$message.val(),
-      roomname: app.roomname || 'lobby'
+      roomname: app.roomname || 'lobby',
+      createdAt: Date.now()
     };
 
     app.send(message);

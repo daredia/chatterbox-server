@@ -36,8 +36,8 @@ var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
   var urlParts = url.parse(request.url);
-  // console.log('------>urlParts:', urlParts);
-  // console.log('------>urlParts.pathname:', urlParts.pathname);
+  console.log('------>urlParts:', urlParts);
+  console.log('------>urlParts.pathname:', urlParts.pathname);
 
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
@@ -82,7 +82,13 @@ var requestHandler = function(request, response) {
   if (request.method === 'GET') {
     // The outgoing status.
     var statusCode;
-    
+    var query = urlParts.query.split('=');
+    if (query[0] === 'order' && query[1] === '-createdAt') {
+      storage['results'] = storage['results'].sort(function(a, b) {
+        return b.createdAt - a.createdAt;
+      });
+    }
+
     if (urlParts.pathname === '/classes/messages') {
       statusCode = 200;
     } else {
