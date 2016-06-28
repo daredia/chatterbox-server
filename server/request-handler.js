@@ -1,3 +1,9 @@
+var url = require('url');
+
+var storage = {
+  'results': []
+};
+
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -32,21 +38,12 @@ var requestHandler = function(request, response) {
   var sampleJson = {
     'results': ['blah']
   };
-  
-  // dispatcher.onGet('/classes/messages', function(req, res) {
-  //   console.log('---------->inside dispatcher');
-    
-  //   console.log('---------->', sampleJson);
-  //   // res.on('data', function (data) {
-  //   //   console.log('---------->', sampleJson); // I can't parse it because, it's a string. why?
-  //   // });
-  //   res.writeHead(200, {'Content-Type': 'text/plain'});
-  //   res.write(JSON.stringify(sampleJson));
-  //   res.end('onClassesMessages');
-  // });    
 
-  // The outgoing status.
-  var statusCode = 200;
+  
+
+  var urlParts = url.parse(request.url);
+  // console.log('------>urlParts:', urlParts);
+  // console.log('------>urlParts.pathname:', urlParts.pathname);
 
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
@@ -59,17 +56,64 @@ var requestHandler = function(request, response) {
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
-  response.writeHead(statusCode, headers);
-  // response.write(JSON.stringify(sampleJson));
+  
 
-  // Make sure to always call response.end() - Node may not send
-  // anything back to the client until you do. The string you pass to
-  // response.end() will be the body of the response - i.e. what shows
-  // up in the browser.
-  //
-  // Calling .end "flushes" the response's internal buffer, forcing
-  // node to actually send all the data over to the client.
-  response.end(JSON.stringify(sampleJson));
+  if (request.method === 'POST') {
+    // The outgoing status.
+    var statusCode = 201;
+
+    request.on('data', function(chunk) {
+      console.log('Received body data:');
+      console.log(JSON.stringify(chunk));
+      storage['results'].push(JSON.parse(chunk));
+    });
+    
+    request.on('end', function() {
+      response.writeHead(statusCode, headers);
+      response.end(JSON.stringify(sampleJson));
+    });
+    
+    
+
+    // Make sure to always call response.end() - Node may not send
+    // anything back to the client until you do. The string you pass to
+    // response.end() will be the body of the response - i.e. what shows
+    // up in the browser.
+    //
+    // Calling .end "flushes" the response's internal buffer, forcing
+    // node to actually send all the data over to the client.
+    
+  }  
+
+  if (request.method === 'GET') {
+    // The outgoing status.
+    var statusCode = 200;
+
+    // See the note below about CORS headers.
+    var headers = defaultCorsHeaders;
+
+    // Tell the client we are sending them plain text.
+    //
+    // You will need to change this if you are sending something
+    // other than plain text, like JSON or HTML.
+    headers['Content-Type'] = 'text/plain';
+
+    // .writeHead() writes to the request line and headers of the response,
+    // which includes the status and all headers.
+    response.writeHead(statusCode, headers);
+    // response.write(JSON.stringify(sampleJson));
+
+    // Make sure to always call response.end() - Node may not send
+    // anything back to the client until you do. The string you pass to
+    // response.end() will be the body of the response - i.e. what shows
+    // up in the browser.
+    //
+    // Calling .end "flushes" the response's internal buffer, forcing
+    // node to actually send all the data over to the client.
+    response.end(JSON.stringify(storage));  
+  }
+
+  
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
