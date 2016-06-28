@@ -82,7 +82,7 @@ var requestHandler = function(request, response) {
   if (request.method === 'GET') {
     // The outgoing status.
     var statusCode;
-    var query = urlParts.query.split('=');
+    var query = urlParts.query ? urlParts.query.split('=') : [];
     if (query[0] === 'order' && query[1] === '-createdAt') {
       storage['results'] = storage['results'].sort(function(a, b) {
         return b.createdAt - a.createdAt;

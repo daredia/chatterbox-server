@@ -31,6 +31,7 @@
     ]
   },
   "dependencies": {
-    "httpdispatcher": "^1.0.0"
+    "httpdispatcher": "^1.0.0",
+    "node-monkey": "^0.2.16"
   }
 }

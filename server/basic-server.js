@@ -1,6 +1,8 @@
 /* Import node's http module: */
 var http = require('http');
 var handleRequest = require('./request-handler');
+require('node-monkey').start({ host: '127.0.0.1', port: '50500'});
+
 
 // Every server needs to listen on a port with a unique number. The
 // standard port for HTTP servers is port 80, but that port is
