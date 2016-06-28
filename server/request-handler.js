@@ -36,8 +36,6 @@ var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
   var urlParts = url.parse(request.url);
-  console.log('------>urlParts:', urlParts);
-  console.log('------>urlParts.pathname:', urlParts.pathname);
 
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
