@@ -12,7 +12,10 @@ if (!/(&|\?)username=/.test(window.location.search)) {
 }
 
 // Put your parse application keys here!
-$.ajaxPrefilter(function (settings, _, jqXHR) {
-  jqXHR.setRequestHeader('X-Parse-Application-Id', 'dSNCwIniCXIY3dJz4KTuz9ROSUREvvCknGB11ReX');
-  jqXHR.setRequestHeader('X-Parse-REST-API-Key', 'WsWpCFH7gaxcB2B0jVvyKPOcT5NVHriAulknx789');
-});
+
+// TODO: figure out a way to make the below conditional on whether we're using parse server
+
+// $.ajaxPrefilter(function (settings, _, jqXHR) {
+//   jqXHR.setRequestHeader('X-Parse-Application-Id', 'dSNCwIniCXIY3dJz4KTuz9ROSUREvvCknGB11ReX');
+//   jqXHR.setRequestHeader('X-Parse-REST-API-Key', 'WsWpCFH7gaxcB2B0jVvyKPOcT5NVHriAulknx789');
+// });
