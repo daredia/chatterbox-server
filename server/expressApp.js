@@ -1,14 +1,21 @@
 var express = require('express');
 require('node-monkey').start({ host: '127.0.0.1', port: '50500'});
 var bodyParser = require('body-parser');
-
+var fs = require('fs');
+var isEmpty = true;
 
 var myApp = express();
 myApp.use(bodyParser.json());
+myApp.use(express.static('client'));
+myApp.use(express.static(__dirname + '/server')); 
 
 var storage = {
   results: []
 };
+
+var filePath = __dirname + '/data.txt';
+
+fs.appendFile(filePath, '');
 
 myApp.get('/classes/messages', function (req, res) {
   var headers = defaultCorsHeaders;
@@ -29,8 +36,20 @@ myApp.get('/classes/messages', function (req, res) {
 myApp.post('/classes/messages', function (req, res) {
   var headers = defaultCorsHeaders;
   storage['results'].push(req.body);
+  // debugger;
+  var fileContents = '';
+
+  if (!isEmpty) {
+    fileContents += ',';
+  } else {
+    isEmpty = false;
+  }
+  
+  fileContents += JSON.stringify(req.body);
+  fs.appendFile(filePath, fileContents);
 
   res.set(headers);
+
   res.status(201).send('message');
 
 });
