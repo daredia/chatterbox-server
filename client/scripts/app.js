@@ -6,7 +6,7 @@ var app = {
   // server: 'https://api.parse.com/1/classes/messages/',
   server: 'http://127.0.0.1:3000/classes/messages',
   username: 'anonymous',
-  roomname: 'lobby',
+  roomname: 'Lobby',
   lastMessageId: 0,
   friends: {},
 
@@ -71,9 +71,12 @@ var app = {
 
         // Get the last message
         var mostRecentMessage = data.results[data.results.length - 1];
-        var displayedRoom = $('.chat span').first().data('roomname');
+        
+        // TODO: rewrite logic for determining the displayedRoom
+        var displayedRoom = app.$roomSelect.children('option:selected').val();
         
         // Only bother updating the DOM if we have a new message
+
         if (true || mostRecentMessage.objectId !== app.lastMessageId || app.roomname !== displayedRoom) {
           // Update the UI with the fetched rooms
           app.populateRooms(data.results);
@@ -117,10 +120,15 @@ var app = {
   },
 
   populateRooms: function(results) {
-    app.$roomSelect.html('<option value="__newRoom">New room...</option><option value="" selected>Lobby</option></select>');
+    // app.$roomSelect.html('<option value="__newRoom">New room...</option><option value="Lobby" selected>Lobby</option></select>');
 
     if (results) {
+      // loop through options and populate rooms
       var rooms = {};
+      app.$roomSelect.children().each(function() {
+        rooms[$(this).val()] = true;
+      });
+
       results.forEach(function(data) {
         var roomname = data.roomname;
         if (roomname && !rooms[roomname]) {
@@ -132,7 +140,6 @@ var app = {
         }
       });
     }
-
     // Select the menu option
     app.$roomSelect.val(app.roomname);
   },
@@ -147,7 +154,7 @@ var app = {
 
   addMessage: function(data) {
     if (!data.roomname) {
-      data.roomname = 'lobby';
+      data.roomname = 'Lobby';
     }
 
     // Only add messages that are in our current room
@@ -220,7 +227,7 @@ var app = {
     var message = {
       username: app.username,
       text: app.$message.val(),
-      roomname: app.roomname || 'lobby',
+      roomname: app.roomname || 'Lobby',
       createdAt: Date.now()
     };
 
