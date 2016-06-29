@@ -44,6 +44,7 @@ var app = {
       type: 'POST',
       data: JSON.stringify(data),
       contentType: 'application/json',
+      dataType: 'text',
       success: function (data) {
         // Trigger a fetch to update the messages, pass true to animate
         console.log('success post');
