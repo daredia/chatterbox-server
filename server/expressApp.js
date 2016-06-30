@@ -36,7 +36,7 @@ myApp.get('/classes/messages', function (req, res) {
 myApp.post('/classes/messages', function (req, res) {
   var headers = defaultCorsHeaders;
   storage['results'].push(req.body);
-  // debugger;
+  console.log('inside myApp.post in expressApp.js');
   var fileContents = '';
 
   if (!isEmpty) {
